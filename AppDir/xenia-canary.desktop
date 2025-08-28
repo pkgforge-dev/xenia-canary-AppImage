@@ -1,0 +1,13 @@
+[Desktop Entry]
+StartupWMClass=xenia-canary-bin
+Name=Xenia Canary
+GenericName=Xbox 360 Emulator
+Comment=Xenia Canary is an experimental fork of the Xenia emulator.
+Exec=xenia_canary
+Type=Application
+Categories=Emulator;Game;
+Keywords=xbox
+Terminal=false
+StartupWMClass=xenia_canary
+Icon=xenia-canary
+Comment=An experimental emulator for the Xbox 360.

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# Example AppRun for using the hooks of this repository.
+# NOTE: It is meant to be used with sharun which uses a top level bin dir
+# NOTE2: If you do not need the hooks DO NOT USE THIS SCRIPT!!
+# sharun itself can work as teh AppRun and that is much better!
+
+if [ "$APPRUN_DEBUG" = 1 ]; then
+	set -x
+fi
+
+set -e
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+CACHEDIR="${XDG_CACHE_HOME:-$HOME/.cache}"/xenia-canary-appimage
+
+# additional scripts can be placed in the top level bin dir
+# those with a name that ends with .hook will be executed in the current shell
+# while those that end with bg.hook will be executed in the background
+for hook in "$CURRENTDIR"/bin/*.hook; do
+	[ -x "$hook" ] || continue
+	case "$hook" in
+		*.bg.hook) >&2 echo "exec bg hook: $hook"; "$hook" &;;
+		*.hook)    >&2 echo "exec hook: $hook";    "$hook"  ;;
+	esac
+done
+
+# This app likes to meake a bunch of cache files in the PWD
+# lets switch the PWD to fix that issue
+mkdir -p "$CACHEDIR"/bin
+cd "$CACHEDIR"
+
+# It also makes a log file next to the binary, so we have to work around this mess
+# since the AppDir does not have write acces normally we will have to
+# make a fake AppDir XDG_CACHE_HOME and then copy and hardlink sharun there
+# while symlinking the libs and rest of files to the real AppDir
+cp "$CURRENTDIR"/sharun    ./
+cp "$CURRENTDIR"/.env      ./ 2>/dev/null || true
+cp "$CURRENTDIR"/.preload  ./ 2>/dev/null || true
+
+ln -f ./sharun ./bin/xenia_canary
+
+ln -sfn "$CURRENTDIR"/lib     ./lib
+ln -sfn "$CURRENTDIR"/share   ./share
+ln -sfn "$CURRENTDIR"/shared  ./shared
+ln -sfn "$CURRENTDIR"/etc     ./etc 2>/dev/null || true
+
+# Now jump to xenia
+exec ./bin/xenia_canary "$@"

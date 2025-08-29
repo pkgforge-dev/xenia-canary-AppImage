@@ -5,7 +5,11 @@ set -eux
 ARCH="$(uname -m)"
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-XENIA_BIN="https://github.com/xenia-canary/xenia-canary-releases/releases/latest/download/xenia_canary_linux.tar.xz"
+
+XENIA_BIN=$(wget -q https://api.github.com/repos/xenia-canary/xenia-canary-releases/releases -O - \
+	| sed 's/[()",{} ]/\n/g' | grep -oi "https.*linux.tar.xz$" | head -1)
+VERSION=$(echo "$XENIA_BIN" | awk -F'/' '{print $(NF-1); exit}')
+echo "$VERSION" > ~/version
 
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
@@ -28,3 +32,6 @@ wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
 chmod +x ./uruntime2appimage
 ./uruntime2appimage
 
+mkdir -p ./dist
+mv -v ./*.AppImage* ./dist
+mv -v ~/version     ./dist

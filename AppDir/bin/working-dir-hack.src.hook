@@ -1,29 +1,9 @@
 #!/bin/sh
 
-# Example AppRun for using the hooks of this repository.
-# NOTE: It is meant to be used with sharun which uses a top level bin dir
-# NOTE2: If you do not need the hooks DO NOT USE THIS SCRIPT!!
-# sharun itself can work as teh AppRun and that is much better!
+# This hack is needed since xenia makes and writes to
+# some directories next to the binary and current working dir
 
-if [ "$APPRUN_DEBUG" = 1 ]; then
-	set -x
-fi
-
-set -e
-
-CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
 CACHEDIR="${XDG_CACHE_HOME:-$HOME/.cache}"/xenia-canary-appimage
-
-# additional scripts can be placed in the top level bin dir
-# those with a name that ends with .hook will be executed in the current shell
-# while those that end with bg.hook will be executed in the background
-for hook in "$CURRENTDIR"/bin/*.hook; do
-	[ -x "$hook" ] || continue
-	case "$hook" in
-		*.bg.hook) >&2 echo "exec bg hook: $hook"; "$hook" &;;
-		*.hook)    >&2 echo "exec hook: $hook";    "$hook"  ;;
-	esac
-done
 
 # This app likes to meake a bunch of cache files in the PWD
 # lets switch the PWD to fix that issue

@@ -1,10 +1,13 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
 ARCH="$(uname -m)"
+BINARY="https://github.com/xenia-canary/xenia-canary-releases/releases/latest/download/xenia_canary_linux.tar.xz"
 EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
 
+echo "Installing dependencies..."
+echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
 	base-devel        \
 	cmake             \
@@ -23,6 +26,14 @@ pacman -Syu --noconfirm \
 	zlib              \
 	zsync
 
+if ! wget --retry-connrefused --tries=30 "$BINARY" -O /tmp/xenia.tar.xz 2>/tmp/download.log; then
+	cat /tmp/download.log
+	exit 1
+fi
+awk -F'/' '/Location:/{print $(NF-1); exit}' /tmp/download.log > ~/version
+
+tar xvf /tmp/xenia.tar.xz
+chmod +x ./build/bin/Linux/Release/xenia_canary
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"

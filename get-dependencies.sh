@@ -17,7 +17,7 @@ pacman -Syu --noconfirm \
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-get-debloated-pkgs.sh --add-mesa gtk3-mini libxml2-mini opus-mini gdk-pixbuf2-mini librsvg-mini
+get-debloated-pkgs --add-mesa gtk3-mini libxml2-mini opus-mini gdk-pixbuf2-mini librsvg-mini
 
 echo "Downloading '$BINARY'..."
 echo "---------------------------------------------------------------"

@@ -14,16 +14,16 @@ cd "$CACHEDIR"
 # since the AppDir does not have write acces normally we will have to
 # make a fake AppDir XDG_CACHE_HOME and then copy and hardlink sharun there
 # while symlinking the libs and rest of files to the real AppDir
-cp "$CURRENTDIR"/sharun    ./
-cp "$CURRENTDIR"/.env      ./ 2>/dev/null || true
-cp "$CURRENTDIR"/.preload  ./ 2>/dev/null || true
+cp "$APPDIR"/sharun    ./
+cp "$APPDIR"/.env      ./ 2>/dev/null || true
+cp "$APPDIR"/.preload  ./ 2>/dev/null || true
 
 ln -f ./sharun ./bin/xenia_canary
 
-ln -sfn "$CURRENTDIR"/lib     ./lib
-ln -sfn "$CURRENTDIR"/share   ./share
-ln -sfn "$CURRENTDIR"/shared  ./shared
-ln -sfn "$CURRENTDIR"/etc     ./etc 2>/dev/null || true
+ln -sfn "$APPDIR"/lib     ./lib
+ln -sfn "$APPDIR"/share   ./share
+ln -sfn "$APPDIR"/shared  ./shared
+ln -sfn "$APPDIR"/etc     ./etc 2>/dev/null || true
 
 # Now jump to xenia
 exec ./bin/xenia_canary "$@"

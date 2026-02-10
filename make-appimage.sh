@@ -3,8 +3,7 @@
 set -eu
 
 ARCH="$(uname -m)"
-VERSION="$(cat ~/version)"
-export ARCH VERSION
+export ARCH
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
@@ -18,3 +17,6 @@ quick-sharun ./build/bin/Linux/Release/xenia_canary
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# test the final app
+quick-sharun --test ./dist/*.AppImage

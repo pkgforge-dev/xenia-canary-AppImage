@@ -7,7 +7,7 @@
 [![Latest Stable Release](https://img.shields.io/github/v/release/pkgforge-dev/xenia-canary-AppImage)](https://github.com/pkgforge-dev/xenia-canary-AppImage/releases/latest)
 
 <p align="center">
-  <img src="https://github.com/pkgforge-dev.png" width="128" />
+  <img src="https://github.com/xenia-canary/xenia-canary/blob/canary_experimental/assets/icon/128.png" width="128" />
 </p>
 
 

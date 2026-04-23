@@ -15,6 +15,10 @@ cp "$APPDIR"/sharun    ./
 cp "$APPDIR"/.env      ./ 2>/dev/null || true
 cp "$APPDIR"/.preload  ./ 2>/dev/null || true
 
+# workaround uutils bug
+# https://github.com/pkgforge-dev/xenia-canary-AppImage/issues/14
+# this garbage was shipped in ubuntu 25.10 where ln -f does not even work...
+rm -f ./bin/xenia_canary
 ln -f ./sharun ./bin/xenia_canary
 
 ln -sfn "$APPDIR"/lib     ./lib

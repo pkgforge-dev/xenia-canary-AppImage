@@ -3,7 +3,7 @@
 set -eu
 
 ARCH="$(uname -m)"
-BINARY="https://github.com/xenia-canary/xenia-canary-releases/releases/latest/download/xenia_canary_linux.tar.xz"
+BINARY="https://github.com/xenia-canary/xenia-canary-releases/releases/latest/download/xenia_canary_linux.tar_.xz"
 
 echo "Installing dependencies..."
 echo "---------------------------------------------------------------"

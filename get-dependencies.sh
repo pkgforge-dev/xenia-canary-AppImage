@@ -8,7 +8,6 @@ BINARY="https://github.com/xenia-canary/xenia-canary-releases/releases/latest/do
 echo "Installing dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	base-devel        \
 	libx11            \
 	sdl2              \
 	vulkan-headers    \
@@ -17,9 +16,8 @@ pacman -Syu --noconfirm \
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-get-debloated-pkgs --add-mesa gtk3-mini libxml2-mini opus-mini gdk-pixbuf2-mini librsvg-mini
+get-debloated-pkgs --add-common
 
-echo "Downloading '$BINARY'..."
 echo "---------------------------------------------------------------"
 if ! wget --retry-connrefused --tries=30 "$BINARY" -O /tmp/xenia.tar.xz 2>/tmp/download.log; then
 	cat /tmp/download.log
